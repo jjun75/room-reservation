@@ -4,18 +4,39 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { HomePage } from '../pages/home/home';
+import { LoginPage } from "../pages/login/login";
+
+import * as firebase from 'firebase';
+import { ConferencePage } from '../pages/conference/conference';
+
+var config = {
+  apiKey: "AIzaSyBZ3P9Oa_oonar_Cgti4L2_uOenFEAtJ5s",
+  authDomain: "newson-5c00c.firebaseapp.com",
+  databaseURL: "https://newson-5c00c.firebaseio.com",
+  projectId: "newson-5c00c",
+  storageBucket: "",
+  messagingSenderId: "783096301455"
+};
+
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage:any = HomePage;
+  rootPage:any;
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
     platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
+    });
+
+    firebase.initializeApp(config);
+    firebase.auth().onAuthStateChanged((user) =>{
+      if (user) {
+       this.rootPage = ConferencePage;
+      } else {
+       this.rootPage = LoginPage;
+      }
     });
   }
 }
