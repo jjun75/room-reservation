@@ -29,7 +29,7 @@ export class LoginPage {
   async login() {
     this.loader.show();
     try {
-      const result = await firebase.auth().signInWithEmailAndPassword(this.user.getEmail(), this.user.getPassword());
+      const result = await firebase.auth().signInWithEmailAndPassword(this.user.email, this.user.password);
       if (result) {
         console.log("create user >>>>" + result);
         this.user = this.loginUserInfo(result.user.uid);
@@ -39,10 +39,12 @@ export class LoginPage {
     } catch (error) {
       let alert = this.alertCtrl.create({
         title: "Login Error",
-        message: error.message
+        message: error.message,
+        buttons: ["확인"]
       });
       alert.present();
     }
+      this.loader.hide();
   }
 
   loginUserInfo(id: any): User {

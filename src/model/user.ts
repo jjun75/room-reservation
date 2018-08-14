@@ -38,9 +38,6 @@ export class User {
         this.name = name;
     }
 
-    get emailView(): string {
-        return this.email;
-    }
     getEmail(): string {
         return this.email;
     }
