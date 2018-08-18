@@ -1,47 +1,30 @@
 import { Component } from '@angular/core';
-import { NavController ,AlertController} from 'ionic-angular';
+import { IonicPage, ModalController, NavController, App } from 'ionic-angular';
 
-import * as firebase from 'firebase';
+import { Reservation } from '../../model/Reservation';
 
+@IonicPage()
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
 export class HomePage {
 
-  private userName : any;
-  private userEmail : any;
-  private userId : any;
-
-  constructor(public navCtrl: NavController,
-    private alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public modalCtrl: ModalController, public app: App) {
   }
 
-  logout(){
+  /**
+   * The view loaded, let's query our items for the list
+   */
+  ionViewDidLoad() {
+  }
 
-    let confirm = this.alertCtrl.create({
-      title: 'Log out ',
-      message: 'log out 하시겠습니까 ?',
-      buttons: [
-        {
-          text: '아니오',
-          handler: () => {
-            console.log('Disagree clicked');
-          }
-        },
-        {
-          text: '예',
-          handler: () => {
-            firebase.auth().signOut().then(() => {
-              console.log("log out");
-            }).catch( (error) => {
-              console.log("log out errror");
-            });
-          }
-        }
-      ]
+    /**
+   * Navigate to the detail page for this item.
+   */
+  openItem(reservation: Reservation) {
+    this.navCtrl.push('ConferencePage', {
+
     });
-    confirm.present();
   }
-
 }

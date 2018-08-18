@@ -1,16 +1,20 @@
 <ion-header>
-  <ion-navbar color='primary'>
-    <ion-title>
-      Home
-    </ion-title>
-    <ion-buttons end>
+
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{ 'HOME' | translate }}</ion-title>
+
+    <!-- <ion-buttons end>
       <button ion-button icon-only (click)="logout()">
         <ion-icon name="log-out"></ion-icon>
       </button>
-    </ion-buttons>
+    </ion-buttons> -->
   </ion-navbar>
+
 </ion-header>
 
-<ion-content padding>
+<ion-content>
 
 </ion-content>

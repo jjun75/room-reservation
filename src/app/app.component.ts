@@ -1,43 +1,62 @@
-import { Component } from '@angular/core';
-import { Platform } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { Nav, Platform, MenuController, App } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-
-import { HomePage } from '../pages/home/home';
-import { LoginPage } from "../pages/login/login";
+import * as environmet from '../environments/environments'
+import { WelcomePage } from "../pages/welcome/welcome";
 
 import * as firebase from 'firebase';
+import { TabsPage } from '../pages/tabs/tabs';
 import { ConferencePage } from '../pages/conference/conference';
-
-var config = {
-  apiKey: "AIzaSyBZ3P9Oa_oonar_Cgti4L2_uOenFEAtJ5s",
-  authDomain: "newson-5c00c.firebaseapp.com",
-  databaseURL: "https://newson-5c00c.firebaseio.com",
-  projectId: "newson-5c00c",
-  storageBucket: "",
-  messagingSenderId: "783096301455"
-};
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
+  @ViewChild(Nav) nav: Nav;
   rootPage:any;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
+  pages: Array<{title: string, component: any}>;
+
+  constructor(
+    public platform: Platform,
+    public menu: MenuController,
+    public statusBar: StatusBar,
+    public splashScreen: SplashScreen,
+    public app: App) {
+    this.pages = [
+      {title:'ConferenceRoom', component: ConferencePage}
+    ];
+
     platform.ready().then(() => {
       statusBar.styleDefault();
       splashScreen.hide();
     });
 
-    firebase.initializeApp(config);
+    firebase.initializeApp(environmet.config);
     firebase.auth().onAuthStateChanged((user) =>{
       if (user) {
-       this.rootPage = ConferencePage;
+       this.rootPage = TabsPage;
       } else {
-       this.rootPage = LoginPage;
+       this.rootPage = WelcomePage;
       }
     });
+  }
+
+  openPage(page){
+    this.menu.close();
+    this.nav.setRoot(page.component);
+  }
+  backToWelcome() {
+    const root = this.app.getRootNav();
+    root.popToRoot();
+  }
+
+  logout() {
+    //Api Token Logout
+    localStorage.clear();
+    //setTimeout(() => this.backToWelcome(), 1000);
+    this.backToWelcome();
   }
 }
 

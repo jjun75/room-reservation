@@ -1,3 +1,18 @@
 page-login {
+    .background {
+        background-image: url('../../assets/imgs/loginBg.jpg')
+    }
+    .scroll-content {
+        align-content: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
 
+    }
+    #loginForm{
+        .marginTop{
+            margin-top:50px;
+        }
+    }
 }

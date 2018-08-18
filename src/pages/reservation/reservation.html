@@ -1,0 +1,39 @@
+<!--
+  Generated template for the ReservationPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>reservation</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-ony (click)='cancel()'>
+        <ion-icon name='close-circle'></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list>
+      <ion-item>
+          <ion-label>Conference Room</ion-label>
+          <ion-select [(ngModel)]="conferenceRoom.id" interface="popover">
+            <ion-option value="01">11층 대회의실</ion-option>
+            <ion-option value="02">11층 소회의실</ion-option>
+            <ion-option value="03">12층 연구소회의실</ion-option>
+          </ion-select>
+        </ion-item>
+    <ion-item>
+      <ion-label fixed>Username</ion-label>
+      <ion-input type="text" value=""></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>Password</ion-label>
+      <ion-input type="password"></ion-input>
+    </ion-item>
+  </ion-list>
+</ion-content>
