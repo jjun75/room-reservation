@@ -21,3 +21,7 @@ body {
     -ms-user-select: text;
     user-select: text;
 }
+
+.activeHighlight {
+    background-color: map-get($colors, energy);
+}

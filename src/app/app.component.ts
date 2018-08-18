@@ -15,6 +15,7 @@ import { ConferencePage } from '../pages/conference/conference';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
   rootPage:any;
+  activePage: any;
 
   pages: Array<{title: string, component: any}>;
 
@@ -25,8 +26,11 @@ export class MyApp {
     public splashScreen: SplashScreen,
     public app: App) {
     this.pages = [
-      {title:'ConferenceRoom', component: ConferencePage}
+      { title: 'Home', component: TabsPage},
+      { title:'ConferenceRoom', component: ConferencePage}
     ];
+
+    this.activePage = this.pages[0];
 
     platform.ready().then(() => {
       statusBar.styleDefault();
@@ -46,6 +50,7 @@ export class MyApp {
   openPage(page){
     this.menu.close();
     this.nav.setRoot(page.component);
+    this.activePage = page;
   }
   backToWelcome() {
     const root = this.app.getRootNav();
@@ -57,6 +62,10 @@ export class MyApp {
     localStorage.clear();
     //setTimeout(() => this.backToWelcome(), 1000);
     this.backToWelcome();
+  }
+
+  checkActive(page) {
+    return page == this.activePage;
   }
 }
 
