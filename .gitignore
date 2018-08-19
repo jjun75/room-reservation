@@ -27,6 +27,7 @@ platforms/
 plugins/
 plugins/android.json
 plugins/ios.json
+src/environments
 www/
 $RECYCLE.BIN/
 
