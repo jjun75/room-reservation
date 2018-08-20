@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { ReservationModel } from '../../model/reservation.model';
 
 /**
  * Generated class for the ReservationPage page.
@@ -14,10 +15,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'reservation.html',
 })
 export class ReservationPage {
-  public conferenceRoom = {
-    id: '',
-    name: ''
-  }
+  public res: ReservationModel = new ReservationModel();
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
@@ -26,8 +24,19 @@ export class ReservationPage {
     console.log('ionViewDidLoad ReservationPage');
   }
 
+  reserve(){
+    console.log('room reserve');
+  }
 
   cancel(){
     this.navCtrl.pop();
+  }
+
+  monthChange(val: any) {
+    console.log('Month Change:', val);
+  }
+
+  yearChange(val: any) {
+    console.log('Year Change:', val);
   }
 }

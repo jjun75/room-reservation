@@ -3,16 +3,26 @@
     <ion-header>
         <ion-toolbar>
             <ion-title>Pages</ion-title>
+
         </ion-toolbar>
     </ion-header>
 
-    <ion-content>
+    <ion-content class="background">
         <ion-list>
-            <button ion-item *ngFor="let p of pages" [class.activeHighlight] (click)="openPage(p)">
+            <button ion-item *ngFor="let p of pages" [class.activeHighlight]="checkActive(p)" (click)="openPage(p)">
                 {{p.title}}
             </button>
         </ion-list>
     </ion-content>
+
+    <ion-footer>
+        <ion-buttons end>
+            <button icon-ony (click)='logout()'>
+              <ion-icon name='log-out'></ion-icon>
+            </button>
+          </ion-buttons>
+    </ion-footer>
+
 
 </ion-menu>
 

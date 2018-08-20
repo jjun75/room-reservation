@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, ModalController, NavController, App } from 'ionic-angular';
 
-import { Reservation } from '../../model/Reservation';
+import { ReservationModel } from '../../model/reservation.model';
 
 @IonicPage()
 @Component({
@@ -22,7 +22,7 @@ export class HomePage {
     /**
    * Navigate to the detail page for this item.
    */
-  openItem(reservation: Reservation) {
+  openItem(reservation: ReservationModel) {
     this.navCtrl.push('ConferencePage', {
 
     });

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import * as firebase from 'firebase';
-import { Reservation } from '../../model/Reservation';
+import { ReservationModel } from '../../model/reservation.model';
 import { ReservationPage } from '../../pages/reservation/reservation';
 
 /**
@@ -31,7 +31,7 @@ export class ConferencePage {
       if(items) {
         console.log("result size : " + items.length);
         items.forEach(element => {
-          var reservation = new Reservation();
+          var reservation = new ReservationModel();
           reservation.setRoomId(element.val().roomId);
           reservation.setRoomName(element.val().roomName);
           reservation.setConferenceTitle(element.val().conferenceTitle);

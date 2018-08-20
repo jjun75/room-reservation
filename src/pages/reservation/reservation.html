@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>reservation</ion-title>
+    <ion-title>res</ion-title>
     <ion-buttons end>
       <button ion-button icon-ony (click)='cancel()'>
         <ion-icon name='close-circle'></ion-icon>
@@ -20,20 +20,36 @@
 <ion-content padding>
   <ion-list>
       <ion-item>
-          <ion-label>Conference Room</ion-label>
-          <ion-select [(ngModel)]="conferenceRoom.id" interface="popover">
+          <ion-label>회의실</ion-label>
+          <!-- <ion-select [(ngModel)]="conferenceRoom.id" interface="popover"> -->
+          <ion-select [(ngModel)]="res.getRoomId">
             <ion-option value="01">11층 대회의실</ion-option>
             <ion-option value="02">11층 소회의실</ion-option>
-            <ion-option value="03">12층 연구소회의실</ion-option>
+            <ion-option value="03">12층 소회의실</ion-option>
           </ion-select>
         </ion-item>
-    <ion-item>
-      <ion-label fixed>Username</ion-label>
-      <ion-input type="text" value=""></ion-input>
+        <ion-item>
+          <ion-label fixed>예약일</ion-label>
+          <ion-datetime displayFormat="YYYY-MM-DD" min="2018" max="2020" [(ngModel)]="res.getConferenceDate"></ion-datetime>
+        </ion-item>
+   <ion-item>
+      <ion-label fixed>예약시간</ion-label>
+          <ion-datetime displayFormat="HH:mm" [(ngModel)]="res.getStartTime"></ion-datetime>
     </ion-item>
     <ion-item>
-      <ion-label fixed>Password</ion-label>
-      <ion-input type="password"></ion-input>
+      <ion-label fixed>종료시간</ion-label>
+          <ion-datetime displayFormat="HH:mm" [(ngModel)]="res.getEndTime"></ion-datetime>
     </ion-item>
+    <ion-item>
+      <ion-label fixed>회의명</ion-label>
+      <ion-input type="text" [(ngModel)]="res.getConferenceTitle"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>회의주제</ion-label>
+      <ion-textarea type="text" [(ngModel)]="res.getConferenceContents"></ion-textarea>
+    </ion-item>
+
   </ion-list>
+  <div class='divider' style="width:100%;height:30px"></div>
+  <button ion-button full (click)="reserve()">예약</button>
 </ion-content>

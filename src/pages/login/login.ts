@@ -54,7 +54,6 @@ export class LoginPage {
     userRef.once('value', (items: any) => {
       if(items){
         console.log(items);
-        user.setName(items.val().name);
       }
     });
     return user;

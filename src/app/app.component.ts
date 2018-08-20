@@ -14,10 +14,10 @@ import { ConferencePage } from '../pages/conference/conference';
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
-  rootPage:any;
+  rootPage: any;
   activePage: any;
 
-  pages: Array<{title: string, component: any}>;
+  pages: Array<{ title: string, component: any }>;
 
   constructor(
     public platform: Platform,
@@ -25,9 +25,10 @@ export class MyApp {
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
     public app: App) {
+
     this.pages = [
-      { title: 'Home', component: TabsPage},
-      { title:'ConferenceRoom', component: ConferencePage}
+      { title: 'Home', component: TabsPage },
+      { title: 'ConferenceRoom', component: ConferencePage }
     ];
 
     this.activePage = this.pages[0];
@@ -38,26 +39,30 @@ export class MyApp {
     });
 
     firebase.initializeApp(environmet.config);
-    firebase.auth().onAuthStateChanged((user) =>{
+    firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-       this.rootPage = TabsPage;
+        this.rootPage = TabsPage;
       } else {
-       this.rootPage = WelcomePage;
+        this.rootPage = WelcomePage;
       }
     });
   }
 
-  openPage(page){
+  openPage(page) {
     this.menu.close();
     this.nav.setRoot(page.component);
     this.activePage = page;
   }
   backToWelcome() {
-    const root = this.app.getRootNav();
-    root.popToRoot();
+    // const root = this.app.getRootNav();
+    // root.popToRoot();
+    const root = this.app.getRootNavById('n4');
+    this.rootPage = WelcomePage;
   }
 
   logout() {
+    firebase.auth().signOut();
+    this.menu.close();
     //Api Token Logout
     localStorage.clear();
     //setTimeout(() => this.backToWelcome(), 1000);

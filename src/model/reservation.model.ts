@@ -1,10 +1,10 @@
-export class Reservation {
+export class ReservationModel {
     id; //예약번호
     roomId: string; //회의실 ID
     roomName: string; //회의실명
     conferenceTitle: string; //회의제목
     conferenceContents: string; //예약 내용
-    conferenceDate: Date; //예약일
+    conferenceDate: string; //예약일
     startTime: string; //회의시작시간
     endTime: string; //회의종료시간
     attendants: any; //참석자목록
@@ -12,52 +12,52 @@ export class Reservation {
     constructor(){
     }
 
-    getRoomId(): string {
+    public getRoomId(): string {
         return this.roomId;
     }
-    setRoomId(roomId: string) {
+    public setRoomId(roomId: string) {
         this.roomId = roomId;
     }
 
-    getRoomName(): string {
+    public getRoomName(): string {
         return this.roomName;
     }
-    setRoomName(roomName: string) {
+    public setRoomName(roomName: string) {
         this.roomName = roomName;
     }
 
-    getConferenceTitle(): string {
+    public getConferenceTitle(): string {
         return this.conferenceTitle;
     }
-    setConferenceTitle(conferenceTitle: string) {
+    public setConferenceTitle(conferenceTitle: string) {
         this.conferenceTitle = conferenceTitle;
     }
 
-    getConferenceContents(): string {
+    public getConferenceContents(): string {
         return this.conferenceContents;
     }
-    setConferenceContents(conferenceContents: string) {
+    public setConferenceContents(conferenceContents: string) {
         this.conferenceContents = conferenceContents;
     }
 
-    getConferenceDate(): Date {
+    public getConferenceDate(): string {
         return this.conferenceDate;
     }
-    setConferenceDate(conferenceDate: Date) {
+    public setConferenceDate(conferenceDate: string) {
         this.conferenceDate = conferenceDate;
     }
 
-    getStartTime(): string {
+    public getStartTime(): string {
         return this.startTime;
     }
-    setStartTime(startTime: string) {
+    public setStartTime(startTime: string) {
         this.startTime = startTime;
     }
 
-    getEndTime(): string {
+    public getEndTime(): string {
         return this.endTime;
     }
-    setEndTime(endTime: string) {
+    public setEndTime(endTime: string) {
         this.endTime = endTime;
     }
 

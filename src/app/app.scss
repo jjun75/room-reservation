@@ -25,3 +25,21 @@ body {
 .activeHighlight {
     background-color: map-get($colors, energy);
 }
+
+.background {
+    background-image: url('../../assets/imgs/sideBg.jpg')
+}
+
+.scroll-content {
+    overflow-y: auto !important;
+}
+
+.menu-inner > ion-header,
+    .menu-inner > ion-content,
+    .menu-inner > ion-footer {
+        background-color: #FFD10E;
+    }
+
+.toolbar-title {
+    color : rgb(7, 8, 73);
+}
