@@ -1,5 +1,7 @@
 import { Component, ModuleWithComponentFactories } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
+
 import { SignupPage } from "../../pages/signup/signup";
 import { LoaderProvider } from '../../providers/loader/loader';
 
@@ -18,6 +20,7 @@ export class LoginPage {
   public user: User = new User();
 
   constructor(public navCtrl: NavController,
+    private storage: Storage,
     private alertCtrl: AlertController,
     private loader: LoaderProvider,
     public navParams: NavParams) {
@@ -31,8 +34,10 @@ export class LoginPage {
     try {
       const result = await firebase.auth().signInWithEmailAndPassword(this.user.email, this.user.password);
       if (result) {
-        console.log("create user >>>>" + result);
-        this.user = this.loginUserInfo(result.user.uid);
+        console.log("create user >>>>" + result.user.uid);
+        this.user.id = result.user.uid;
+        this.user.email = result.user.email;
+        this.storage.set("user", this.user);
       } else {
         console.log("result false");
       }

@@ -1,64 +1,73 @@
 export class ReservationModel {
     id; //예약번호
-    roomId: string; //회의실 ID
-    roomName: string; //회의실명
-    conferenceTitle: string; //회의제목
-    conferenceContents: string; //예약 내용
-    conferenceDate: string; //예약일
-    startTime: string; //회의시작시간
-    endTime: string; //회의종료시간
+    roomId: String; //회의실 ID
+    roomName: String; //회의실명
+    conferenceTitle: String; //회의제목
+    conferenceContents: String; //예약 내용
+    conferenceDate: String; //예약일
+    startTime: String; //회의시작시간
+    endTime: String; //회의종료시간
     attendants: any; //참석자목록
+    registerId: String; //등록자 ID
 
     constructor(){
     }
 
-    public getRoomId(): string {
+    public getRoomId(): String {
         return this.roomId;
     }
-    public setRoomId(roomId: string) {
+    public setRoomId(roomId: String) {
         this.roomId = roomId;
     }
 
-    public getRoomName(): string {
+    public getRoomName(): String {
         return this.roomName;
     }
-    public setRoomName(roomName: string) {
+    public setRoomName(roomName: String) {
         this.roomName = roomName;
     }
 
-    public getConferenceTitle(): string {
+    public getConferenceTitle(): String {
         return this.conferenceTitle;
     }
-    public setConferenceTitle(conferenceTitle: string) {
+    public setConferenceTitle(conferenceTitle: String) {
         this.conferenceTitle = conferenceTitle;
     }
 
-    public getConferenceContents(): string {
+    public getConferenceContents(): String {
         return this.conferenceContents;
     }
-    public setConferenceContents(conferenceContents: string) {
+    public setConferenceContents(conferenceContents: String) {
         this.conferenceContents = conferenceContents;
     }
 
-    public getConferenceDate(): string {
+    public getConferenceDate(): String {
         return this.conferenceDate;
     }
-    public setConferenceDate(conferenceDate: string) {
+    public setConferenceDate(conferenceDate: String) {
         this.conferenceDate = conferenceDate;
     }
 
-    public getStartTime(): string {
+    public getStartTime(): String {
         return this.startTime;
     }
-    public setStartTime(startTime: string) {
+    public setStartTime(startTime: String) {
         this.startTime = startTime;
     }
 
-    public getEndTime(): string {
+    public getEndTime(): String {
         return this.endTime;
     }
-    public setEndTime(endTime: string) {
+    public setEndTime(endTime: String) {
         this.endTime = endTime;
+    }
+
+    public getRegisterId(): String {
+        return this.registerId;
+    }
+
+    public setRegisterId(id: String){
+        this.registerId = id;
     }
 
 }

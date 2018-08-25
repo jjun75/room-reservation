@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { ReservationModel } from '../../model/reservation.model';
 
 /**
@@ -16,8 +16,15 @@ import { ReservationModel } from '../../model/reservation.model';
 })
 export class ReservationPage {
   public res: ReservationModel = new ReservationModel();
+  public conferenceRooms = [
+    {roomId: "01", roomName: "대회의실"},
+    {roomId: "02", roomName: "소회의실"}
+  ]
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(
+    public viewCtrl: ViewController,
+    public navCtrl: NavController,
+    public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
@@ -26,6 +33,7 @@ export class ReservationPage {
 
   reserve(){
     console.log('room reserve');
+    this.viewCtrl.dismiss(this.res);
   }
 
   cancel(){

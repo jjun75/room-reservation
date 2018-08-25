@@ -7,3 +7,7 @@ export const config = {
     messagingSenderId: "783096301455"
   };
 
+export const conferenceRoomCode = [
+    {roomId: "01", roomName: "대회의실"},
+    {roomId: "02", roomName: "소회의실"}
+  ];
