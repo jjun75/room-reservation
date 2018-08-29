@@ -34,10 +34,13 @@ export class LoginPage {
     try {
       const result = await firebase.auth().signInWithEmailAndPassword(this.user.email, this.user.password);
       if (result) {
-        console.log("create user >>>>" + result.user.uid);
+        console.log("login user >>>>" + result.user.uid);
+        console.log("login user >>>>" + result.user.email);
         this.user.id = result.user.uid;
         this.user.email = result.user.email;
-        this.storage.set("user", this.user);
+        this.storage.clear().then(()=> {
+          this.storage.set("user", this.user);
+        });
       } else {
         console.log("result false");
       }

@@ -45,6 +45,7 @@ export class ConferencePage {
         this.reservList = [];
         items.forEach(element => {
           var reservation = new ReservationModel();
+          reservation.setRid(element.val().rid);
           reservation.setRoomId(element.val().roomId);
           reservation.setRoomName(element.val().roomName);
           reservation.setConferenceTitle(element.val().conferenceTitle);
@@ -52,6 +53,7 @@ export class ConferencePage {
           reservation.setConferenceDate(element.val().conferenceDate);
           reservation.setStartTime(element.val().startTime);
           reservation.setEndTime(element.val().endTime);
+          reservation.setMessages(element.val().messages);
           this.reservList.push(reservation);
         });
       }else{
@@ -59,7 +61,6 @@ export class ConferencePage {
       }
     });
     this.loader.hide();
-    console.log(this.reservList);
   }
 
   ionViewDidLoad() {
@@ -74,10 +75,22 @@ export class ConferencePage {
     //modal 창이 닫히면서 데이터 전송되면 데이터를 DB에 저장 처리
     modal.onDidDismiss(data => {
       console.log(data);
-      const postsRef = firebase.database().ref("reservation/");
-      postsRef.push(data);
+      const key = firebase.database().ref("reservation/").push().key;
+      data.setRid(key);
+      this.writeReservationData(key, data);
     });
     modal.present();
+  }
+
+  writeReservationData(key: string, data: any) {
+    console.log('writeReservationData:' + key);
+    firebase.database().ref('/reservation/' + key ).update(data, error => {
+      if (error) {
+        console.log('database insert error : ' + error.message);
+      } else {
+        console.log('database insert success');
+      }
+    });
   }
 
   getRoomName(roomId: string): string {
@@ -85,8 +98,8 @@ export class ConferencePage {
     return environments.conferenceRoomCode[idx].roomId;
   }
 
-  showConfirm(roomId) {
-    this.selectedId = roomId;
+  writeMessage(rid: string) {
+    this.selectedId = rid;
     const confirm = this.alertCtrl.create({
       title: '미참석 사유',
       message: 'ic galaxy?',
@@ -106,16 +119,20 @@ export class ConferencePage {
         {
           text: '확인',
           handler: data => {
-            console.log('Agree clicked'+ data.message);
-            const postsRef = firebase.database().ref("reservation/"+roomId+"/messages/");
+            console.log('Agree clicked : '+ data.message);
+            const key = firebase.database().ref("reservation/"+rid+"/messages/").push().key;
+            console.log('message key : '+ key);
             let user: any;
-            this.storage.get("user").then((data) => {
-              user = data;
+            this.storage.get("user").then((val) => {
+              if(val){
+                console.log("storage : "+val.id);
+                firebase.database().ref("reservation/"+rid+"/messages/"+key).set(
+                  { uid: val.id,
+                    message: data.message}
+                  );
+              }
             });
-            postsRef.update(
-              { uid: user.uid,
-                message: data.message}
-            );
+
           }
         }
       ]

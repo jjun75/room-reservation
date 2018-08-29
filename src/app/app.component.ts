@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform, MenuController, App } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import * as environmet from '../environments/environments'
@@ -22,6 +23,7 @@ export class MyApp {
   constructor(
     public platform: Platform,
     public menu: MenuController,
+    public storage: Storage,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
     public app: App) {
@@ -61,10 +63,11 @@ export class MyApp {
   }
 
   logout() {
-    firebase.auth().signOut();
+    this.storage.clear().then(() => {
+      firebase.auth().signOut();
+    });
     this.menu.close();
     //Api Token Logout
-    localStorage.clear();
     //setTimeout(() => this.backToWelcome(), 1000);
     this.backToWelcome();
   }

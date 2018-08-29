@@ -1,5 +1,5 @@
 export class ReservationModel {
-    id; //예약번호
+    rid; //예약번호
     roomId: String; //회의실 ID
     roomName: String; //회의실명
     conferenceTitle: String; //회의제목
@@ -9,8 +9,15 @@ export class ReservationModel {
     endTime: String; //회의종료시간
     attendants: any; //참석자목록
     registerId: String; //등록자 ID
+    messages: any;
 
     constructor(){
+    }
+    public getRid(): String {
+        return this.rid;
+    }
+    public setRid(rid: String) {
+        this.rid = rid;
     }
 
     public getRoomId(): String {
@@ -68,6 +75,13 @@ export class ReservationModel {
 
     public setRegisterId(id: String){
         this.registerId = id;
+    }
+
+    public setMessages(messages: any){
+        this.messages = messages;
+    }
+    public getMessages(){
+        return this.messages;
     }
 
 }

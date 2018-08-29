@@ -48,9 +48,10 @@
         </button>
       </ion-col> -->
       <ion-col>
-        <button ion-button icon-start clear small (click)="showConfirm(item.roomId)">
+        <button ion-button icon-start clear small (click)="writeMessage(item.rid)">
           <ion-icon name="text"></ion-icon>
-          <div>4 Comments</div>
+          <div *ngIf="item.messages === 'undefined'; else">0 Comments</div>
+          <div #else>{{item.messages.length}} Comments</div>
         </button>
       </ion-col>
       <ion-col center text-center>
