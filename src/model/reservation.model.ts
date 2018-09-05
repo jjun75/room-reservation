@@ -9,7 +9,10 @@ export class ReservationModel {
     endTime: String; //회의종료시간
     attendants: any; //참석자목록
     registerId: String; //등록자 ID
-    messages: any;
+    icon: any; //timeline icon
+    time: any; //timeline text
+    messagesCnt: number = 0;
+    dispOrder: number;
 
     constructor(){
     }
@@ -77,11 +80,31 @@ export class ReservationModel {
         this.registerId = id;
     }
 
-    public setMessages(messages: any){
-        this.messages = messages;
+    public setTime(time: any){
+        this.time = time;
     }
-    public getMessages(){
-        return this.messages;
+    public getTime(){
+        return this.time;
     }
 
+    public setIcon(icon: any) {
+      this.icon = icon;
+    }
+    public getIcon() {
+      return this.icon;
+    }
+
+    public setMessagesCnt(cnt: number){
+      this.messagesCnt = cnt;
+    }
+    public getMessagesCnt(): number{
+      return this.messagesCnt;
+    }
+
+    public setDispOrder(dispOrder: number){
+      this.dispOrder = dispOrder;
+    }
+    public getDispOrder(): number {
+      return this.dispOrder;
+    }
 }

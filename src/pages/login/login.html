@@ -1,32 +1,41 @@
 <ion-header>
 </ion-header>
-
-<ion-content id="loginForm" class="background">
-  <ion-card>
-      <ion-card-header>
-          <ion-navbar color="dark">
-              <ion-title>Login</ion-title>
-            </ion-navbar>
-      </ion-card-header>
-
-      <ion-card-content >
-          <ion-list no-line>
-            <ion-item>
-              <ion-label floating>Email</ion-label>
-              <ion-input type="email" [(ngModel)]="user.email"></ion-input>
-            </ion-item>
-
-            <ion-item>
-              <ion-label floating>Password</ion-label>
-              <ion-input type="password" [(ngModel)]="user.password"></ion-input>
-            </ion-item>
-            <div class='divider' style="width:100%;height:30px"></div>
-
-          </ion-list>
-
-            <button ion-button block outline color="dark" (click)="login()">Login</button>
-            <button ion-button full (click)="resetEmail()" color='lightprimary'>Reset Email</button>
-          </ion-card-content>
-  </ion-card>
-
+<ion-content padding class="transparent-header" [ngStyle]="{'background-image': 'url(' + backgroundImage +')'}">
+  <ion-header>
+    <ion-navbar>
+    </ion-navbar>
+  </ion-header>
+  <div padding>
+    <ion-row>
+      <ion-col>
+        <img class="logo" src="assets/icon/user-login.png" />
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-list inset class="no-border">
+          <ion-item>
+            <ion-label>User Email</ion-label>
+            <ion-input type="email" [(ngModel)]="user.email"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label>Password</ion-label>
+            <ion-input type="password" [(ngModel)]="user.password"></ion-input>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <button ion-button class="login-button" (click)="login()">Login</button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <div (click)="resetEmail()">
+          <span>Or Forgot your password?</span>
+        </div>
+      </ion-col>
+    </ion-row>
+  </div>
 </ion-content>

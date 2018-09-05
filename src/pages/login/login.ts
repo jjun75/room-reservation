@@ -17,6 +17,8 @@ import { User } from '../../model/user';
 
 export class LoginPage {
 
+  public loginForm: any;
+  public backgroundImage = 'assets/imgs/background/background-2.jpg';
   public user: User = new User();
 
   constructor(public navCtrl: NavController,

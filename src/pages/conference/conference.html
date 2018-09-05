@@ -1,9 +1,3 @@
-<!--
-  Generated template for the ConferencePage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header color="primary">
   <ion-navbar color="dark">
     <button ion-button menuToggle>
@@ -19,46 +13,53 @@
 </ion-header>
 
 <ion-content padding>
+<!-- <timeline endIcon="call">
+  <timeline-item *ngFor="let item of reservList">
+    <timeline-time [time]="item.time"></timeline-time>
+      <ion-icon [name]="item.icon"></ion-icon>
+      <ion-card >
+        <ion-header>
+          <h2>{{item.conferenceTitle}}</h2>
+        </ion-header>
+        <ion-card-content>
+            <ion-item>
+                <ion-avatar item-start *ngIf="item.roomId === '01'">
+                  <img src="assets/imgs/conference-room-main.png">
+                </ion-avatar>
+                <ion-avatar item-start *ngIf="item.roomId === '02'">
+                  <img src="assets/imgs/conference-room-sub.png">
+                </ion-avatar>
+                <p>{{item.roomId}}</p>
+                <p>{{item.conferenceDate}}</p>
+                <p>{{item.startTime}} ~ {{item.endTime}}</p>
+              </ion-item>
 
-  <ion-card *ngFor="let item of reservList">
-    <ion-item>
-      <ion-avatar item-start *ngIf="item.roomId === '01'">
-        <img src="assets/imgs/conference-room-main.png">
-      </ion-avatar>
-      <ion-avatar item-start *ngIf="item.roomId === '02'">
-        <img src="assets/imgs/conference-room-sub.png">
-      </ion-avatar>
-      <h2>{{item.conferenceTitle}}</h2>
-      <p>{{item.roomId}}</p>
-      <p>{{item.conferenceDate}}</p>
-      <p>{{item.startTime}} ~ {{item.endTime}}</p>
-    </ion-item>
+        </ion-card-content>
+      </ion-card>
+ </timeline-item>
+</timeline> -->
+<timeline endIcon="pulse">
+    <timeline-item *ngFor="let item of reservList">
+      <timeline-time [time]="item.time"></timeline-time>
+      <ion-icon [name]="item.icon"></ion-icon>
+      <ion-card>
+        <ion-card-header>
+          {{item.conferenceTitle}}
+        </ion-card-header>
+        <ion-card-content>
+          {{item.conferenceContents}}
+        </ion-card-content>
+        <ion-row>
+            <ion-col>
+              <button ion-button color="primary" clear small float-right (click)="viewMessages(item)">
+              <!-- <ion-icon name="home"></ion-icon> -->
+              {{item.messagesCnt}} Comments
+            </button>
+            </ion-col>
+          </ion-row>
+      </ion-card>
+    </timeline-item>
 
-    <!-- <img src="img/advance-card-bttf.png"> -->
+  </timeline>
 
-    <ion-card-content>
-      <p>{{item.conferenceContents}}</p>
-    </ion-card-content>
-
-    <ion-row>
-      <!-- <ion-col>
-        <button ion-button icon-start clear small>
-          <ion-icon name="thumbs-up"></ion-icon>
-          <div>12 Likes</div>
-        </button>
-      </ion-col> -->
-      <ion-col>
-        <button ion-button icon-start clear small (click)="writeMessage(item.rid)">
-          <ion-icon name="text"></ion-icon>
-          <div *ngIf="item.messages === 'undefined'; else">0 Comments</div>
-          <div #else>{{item.messages.length}} Comments</div>
-        </button>
-      </ion-col>
-      <ion-col center text-center>
-        <ion-note>
-          11h ago
-        </ion-note>
-      </ion-col>
-    </ion-row>
-  </ion-card>
 </ion-content>

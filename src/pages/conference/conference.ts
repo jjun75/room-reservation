@@ -2,12 +2,11 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import * as firebase from 'firebase';
+import * as moment from 'moment';
 import { ReservationModel } from '../../model/reservation.model';
-import { ReservationPage } from '../../pages/reservation/reservation';
 import { LoaderProvider } from '../../providers/loader/loader';
 import  * as environments from '../../environments/environments';
-import { Placeholder } from '@angular/compiler/src/i18n/i18n_ast';
-import { User } from '../../model/user';
+
 
 /**
  * Generated class for the ConferencePage page.
@@ -39,7 +38,7 @@ export class ConferencePage {
 
   reservationList(){
     this.loader.show();
-    const reservationRef = firebase.database().ref("reservation/");
+    const reservationRef = firebase.database().ref("reservation/").orderByChild('dispOrder');
     reservationRef.on('value',(items: any) => {
       if(items) {
         this.reservList = [];
@@ -50,18 +49,39 @@ export class ConferencePage {
           reservation.setRoomName(element.val().roomName);
           reservation.setConferenceTitle(element.val().conferenceTitle);
           reservation.setConferenceContents(element.val().conferenceContents);
-          reservation.setConferenceDate(element.val().conferenceDate);
-          reservation.setStartTime(element.val().startTime);
+          let conferenceDate = element.val().conferenceDate;
+          reservation.setConferenceDate(conferenceDate);
+          let startTime = element.val().startTime;
+          reservation.setStartTime(startTime);
           reservation.setEndTime(element.val().endTime);
-          reservation.setMessages(element.val().messages);
+          if(element.val().roomId === '01'){
+            reservation.setIcon('calendar');
+          }else{
+            reservation.setIcon('cafe');
+          }
+          reservation.setTime({title: element.val().startTime, subtitle: element.val().conferenceDate });
+          reservation.setMessagesCnt(element.val().messagesCnt);
+
+
           this.reservList.push(reservation);
         });
       }else{
         console.log("no Result");
       }
     });
+
     this.loader.hide();
   }
+
+  getMessages(rid: string): string {
+      const messagesRef = firebase.database().ref("messages/");
+      messagesRef.once('value',(items: any) => {
+
+      });
+      return "";
+
+    }
+
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ConferencePage');
@@ -71,15 +91,22 @@ export class ConferencePage {
    * 회의실 예약
    */
   roomReserve() {
-    let modal = this.modalCtrl.create(ReservationPage);
+    let modal = this.modalCtrl.create("ReservationPage");
     //modal 창이 닫히면서 데이터 전송되면 데이터를 DB에 저장 처리
     modal.onDidDismiss(data => {
-      console.log(data);
-      const key = firebase.database().ref("reservation/").push().key;
-      data.setRid(key);
-      this.writeReservationData(key, data);
+      if(data){
+        console.log(data);
+        const key = firebase.database().ref("reservation/").push().key;
+        data.setRid(key);
+        let dispOrder = Number(data.conferenceDate.replace(/-/gi, "")+data.startTime.replace(/:/gi,""));
+        console.log('>>>>>>>>>>> order >>>>>>>>>>> '+dispOrder);
+        data.setDispOrder(999999999999-dispOrder);
+        this.writeReservationData(key, data);
+      }
     });
+
     modal.present();
+
   }
 
   writeReservationData(key: string, data: any) {
@@ -98,8 +125,11 @@ export class ConferencePage {
     return environments.conferenceRoomCode[idx].roomId;
   }
 
-  writeMessage(rid: string) {
-    this.selectedId = rid;
+  viewMessages(reservation: ReservationModel) {
+    this.navCtrl.push("MessagePage", {"reservation": reservation} );
+  }
+  writeMessage(reservation: ReservationModel) {
+    this.selectedId = reservation.rid;
     const confirm = this.alertCtrl.create({
       title: '미참석 사유',
       message: 'ic galaxy?',
@@ -120,19 +150,43 @@ export class ConferencePage {
           text: '확인',
           handler: data => {
             console.log('Agree clicked : '+ data.message);
-            const key = firebase.database().ref("reservation/"+rid+"/messages/").push().key;
-            console.log('message key : '+ key);
-            let user: any;
-            this.storage.get("user").then((val) => {
-              if(val){
-                console.log("storage : "+val.id);
-                firebase.database().ref("reservation/"+rid+"/messages/"+key).set(
-                  { uid: val.id,
-                    message: data.message}
-                  );
-              }
-            });
+            var user = firebase.auth().currentUser;
+            const mid = firebase.database().ref("messages/").push().key;
+            // 한개의 레코드 저장
+            // firebase.database().ref("messages/"+mid).set(
+            //   { rid: rid, //예약번호
+            //     uid: user.uid, //comment 작성자 id
+            //     message: data.message, //comment
+            //     regDt: moment().format("YYYY-MM-DD HH:mm:ss"), //comment 작성 일시
+            //   }
+            // );
 
+            // 두개의 레코드를 업데이트
+            // 하지만 아래처럼 사용하면 update 경로로 잡힌 데이터가 통채로 변경됨
+            // firebase.database().ref("reservation/"+this.selectedId).update({messagesCnt: 5}); 와같이 ref경로를 잡아주어야 함.
+            // var updates = {};
+            // let messageData = { rid: this.selectedId, //예약번호
+            //   uid: user.uid, //comment 작성자 id
+            //   message: data.message, //comment
+            //   regDt: moment().format("YYYY-MM-DD HH:mm:ss"), //comment 작성 일시
+            // }
+            // let countData = {messagesCnt: reservation.getMessagesCnt()+1};
+            // console.log("messages count is : "+ reservation.getMessagesCnt()+1);
+            // updates["/messages/"+mid] = messageData;
+            // updates["/reservation/"+this.selectedId] = countData;
+            // firebase.database().ref().update(updates);
+
+            var updates = {};
+            let messageData = { rid: this.selectedId, //예약번호
+              uid: user.uid, //comment 작성자 id
+              message: data.message, //comment
+              regDt: moment().format("YYYY-MM-DD HH:mm:ss"), //comment 작성 일시
+            }
+            firebase.database().ref("messages/"+mid).update(messageData);
+            const messagesCntRef = firebase.database().ref("reservation/"+this.selectedId+"/messagesCnt");
+            messagesCntRef.transaction((data) => {
+              return data+1;
+            });
           }
         }
       ]

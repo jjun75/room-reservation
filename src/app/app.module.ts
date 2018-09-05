@@ -10,13 +10,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
 import { MyApp } from './app.component';
-import { WelcomePage } from '../pages/welcome/welcome';
-import { LoginPage} from "../pages/login/login";
-import { SignupPage } from "../pages/signup/signup";
-import { TabsPage } from '../pages/tabs/tabs';
 import { LoaderProvider } from '../providers/loader/loader';
-import { ConferencePage } from '../pages/conference/conference';
-import { ReservationPage } from '../pages/reservation/reservation';
+import { SharedModule } from './shared.module';
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -27,14 +22,10 @@ export function createTranslateLoader(http: HttpClient) {
 @NgModule({
   declarations: [
     MyApp,
-    WelcomePage,
-    LoginPage,
-    SignupPage,
-    TabsPage,
-    ConferencePage,
-    ReservationPage
   ],
   imports: [
+    IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot(),
     BrowserModule,
     HttpClientModule,
     TranslateModule.forRoot({
@@ -44,18 +35,11 @@ export function createTranslateLoader(http: HttpClient) {
         deps: [HttpClient]
       }
     }),
-    IonicModule.forRoot(MyApp),
-    IonicStorageModule.forRoot()
+    SharedModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    WelcomePage,
-    LoginPage,
-    SignupPage,
-    TabsPage,
-    ConferencePage,
-    ReservationPage
   ],
   providers: [
     StatusBar,
