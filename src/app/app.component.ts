@@ -6,6 +6,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Subject } from 'rxjs/Subject';
 import * as environmet from '../environments/environments'
 import * as firebase from 'firebase';
+import { AuthProvider } from '../providers/auth/auth.provider';
 
 @Component({
   templateUrl: 'app.html'
@@ -22,6 +23,7 @@ export class MyApp {
   constructor(
     public platform: Platform,
     public menu: MenuController,
+    public authProvider: AuthProvider,
     public storage: Storage,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
@@ -30,7 +32,7 @@ export class MyApp {
     this.pages = [
       { title: 'Home', component: 'HomePage', active: true, icon: 'home'},
       { title: 'ConferenceRoom', component: 'ConferencePage', active: false, icon: 'calendar'},
-      { title: 'Logout', component: 'app', active: false, icon: 'power'},
+      { title: 'Settings', component: 'Settings', active: false, icon: 'settings'},
 
     ];
 
@@ -41,7 +43,7 @@ export class MyApp {
     });
     this.initializeApp();
 
-    firebase.initializeApp(environmet.config);
+    firebase.initializeApp(environmet.firebaseConfig);
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.rootPage = "HomePage"; //page 객체를 사용시 Lazy Loading 이 안됨.
@@ -69,22 +71,8 @@ export class MyApp {
     this.activePage.next(page);
   }
 
-  backToWelcome() {
-    // const root = this.app.getRootNav();
-    // root.popToRoot();
-    const root = this.app.getRootNavById('n4');
-    this.rootPage = "WelcomePage";
-  }
 
-  logout() {
-    this.storage.clear().then(() => {
-      firebase.auth().signOut();
-    });
-    this.menu.close();
-    //Api Token Logout
-    //setTimeout(() => this.backToWelcome(), 1000);
-    this.backToWelcome();
-  }
+
 
   checkActive(page) {
     return page == this.activePage;

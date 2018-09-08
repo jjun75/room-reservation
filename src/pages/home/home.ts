@@ -1,5 +1,7 @@
+import { AuthProvider } from './../../providers/auth/auth.provider';
 import { Component } from '@angular/core';
-import { IonicPage, ModalController, NavController, App } from 'ionic-angular';
+import { IonicPage, NavController, App } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
 
 import { ReservationModel } from '../../model/reservation.model';
 
@@ -10,7 +12,11 @@ import { ReservationModel } from '../../model/reservation.model';
 })
 export class HomePage {
 
-  constructor(public navCtrl: NavController, public modalCtrl: ModalController, public app: App) {
+  constructor(
+    private storage: Storage,
+    private authProvider: AuthProvider,
+    private app: App,
+    public navCtrl: NavController) {
   }
 
   /**
@@ -27,4 +33,21 @@ export class HomePage {
 
     });
   }
+
+  logout() {
+    this.storage.clear().then(() => {
+      this.authProvider.logOut();
+    });
+    //Api Token Logout
+    //setTimeout(() => this.backToWelcome(), 1000);
+    this.backToWelcome();
+  }
+
+  backToWelcome() {
+    // const root = this.app.getRootNav();
+    // root.popToRoot();
+    const root = this.app.getRootNavById('n4');
+    this.navCtrl.push("WelcomePage");
+  }
+
 }

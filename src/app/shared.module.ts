@@ -1,3 +1,4 @@
+import { AuthProvider } from './../providers/auth/auth.provider';
 import { ComponentsModule } from '../components/components.module';
 import { NgModule } from '@angular/core';
 import { IonicModule } from 'ionic-angular';
@@ -11,6 +12,9 @@ import { IonicModule } from 'ionic-angular';
   ],
   exports: [
     ComponentsModule,
+  ],
+  providers: [
+    AuthProvider
   ]
 })
 
