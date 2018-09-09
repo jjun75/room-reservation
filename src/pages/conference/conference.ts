@@ -40,6 +40,7 @@ export class ConferencePage {
     reservationRef.on('value',(items: any) => {
       if(items) {
         this.reservList = [];
+        let tmp = "";
         items.forEach(element => {
           var reservation = new ReservationModel();
           reservation.setRid(element.val().rid);
@@ -48,6 +49,10 @@ export class ConferencePage {
           reservation.setConferenceTitle(element.val().conferenceTitle);
           reservation.setConferenceContents(element.val().conferenceContents);
           let conferenceDate = element.val().conferenceDate;
+          if(tmp !== conferenceDate){
+            tmp = conferenceDate;
+            reservation.setDisplay(true);
+          }
           reservation.setConferenceDate(conferenceDate);
           let startTime = element.val().startTime;
           reservation.setStartTime(startTime);
@@ -57,7 +62,7 @@ export class ConferencePage {
           }else{
             reservation.setIcon('cafe');
           }
-          reservation.setTime({title: element.val().startTime, subtitle: element.val().conferenceDate });
+          reservation.setTime(startTime +" ~ "+element.val().endTime);
           reservation.setMessagesCnt(element.val().messagesCnt);
 
 

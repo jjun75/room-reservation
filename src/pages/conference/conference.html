@@ -11,33 +11,8 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
-
+<!--
 <ion-content padding>
-<!-- <timeline endIcon="call">
-  <timeline-item *ngFor="let item of reservList">
-    <timeline-time [time]="item.time"></timeline-time>
-      <ion-icon [name]="item.icon"></ion-icon>
-      <ion-card >
-        <ion-header>
-          <h2>{{item.conferenceTitle}}</h2>
-        </ion-header>
-        <ion-card-content>
-            <ion-item>
-                <ion-avatar item-start *ngIf="item.roomId === '01'">
-                  <img src="assets/imgs/conference-room-main.png">
-                </ion-avatar>
-                <ion-avatar item-start *ngIf="item.roomId === '02'">
-                  <img src="assets/imgs/conference-room-sub.png">
-                </ion-avatar>
-                <p>{{item.roomId}}</p>
-                <p>{{item.conferenceDate}}</p>
-                <p>{{item.startTime}} ~ {{item.endTime}}</p>
-              </ion-item>
-
-        </ion-card-content>
-      </ion-card>
- </timeline-item>
-</timeline> -->
 <timeline endIcon="pulse">
     <timeline-item *ngFor="let item of reservList">
       <timeline-time [time]="item.time"></timeline-time>
@@ -52,14 +27,33 @@
         <ion-row>
             <ion-col>
               <button ion-button color="primary" clear small float-right (click)="viewMessages(item)">
-              <!-- <ion-icon name="home"></ion-icon> -->
               {{item.messagesCnt}} Comments
             </button>
             </ion-col>
           </ion-row>
       </ion-card>
     </timeline-item>
-
   </timeline>
+</ion-content>
+-->
+<ion-content class="list-avatar-page">
+  <ion-list>
+    <div *ngFor="let item of reservList">
+      <ion-list-header *ngIf="item.isDisplay()">{{item.conferenceDate}}</ion-list-header>
 
+      <ion-item>
+        <ion-avatar item-start>
+          <img src="assets/imgs/avatar/avatar-ts-woody.png">
+        </ion-avatar>
+        <h2>{{item.conferenceTitle}} / {{item.time}}</h2>
+        <p>{{item.conferenceContents}}</p>
+        <ion-note item-end>
+          <button ion-button color="dark" clear small float-right (click)="viewMessages(item)">
+            <ion-icon name="chatbubbles"></ion-icon> {{item.messagesCnt}} Comments
+          </button>
+        </ion-note>
+      </ion-item>
+
+    </div>
+  </ion-list>
 </ion-content>

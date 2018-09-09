@@ -12,6 +12,11 @@ import { ReservationModel } from '../../model/reservation.model';
 })
 export class HomePage {
 
+  public estateProperty = {
+    name: '회의실 예약 시스템',
+    image: 'assets/imgs/background/background-6.jpg',
+ };
+
   constructor(
     private storage: Storage,
     private authProvider: AuthProvider,

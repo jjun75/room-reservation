@@ -14,6 +14,36 @@
   </ion-navbar>
 
 </ion-header>
-<ion-content>
+<ion-content fullscreen elestic-header>
+    <section class="home-image"
+             [ngStyle]="{ 'background-image': 'url(' + estateProperty.image + ')'}">
+      <section class="home-banner" padding>
+        <span class="home-title">{{estateProperty.name}}</span>
+      </section>
+    </section>
+    <section class="main-content">
+      <!-- <ion-grid class="main-features">
+        <ion-row>
+          <ion-col text-center *ngFor="let feature of estateProperty.features">
+            <ion-icon [name]="feature.icon"></ion-icon>
+            <span class="item-block">회의실 예약 시스템</span>
+          </ion-col>
+        </ion-row>
+      </ion-grid> -->
+      <ion-grid class="listing-details">
+        <ion-row>
+          <p margin-left margin-right no-margin-top style="text-align: justify">
+            회의실 예약 파일럿 시스템입니다. <br>
+          </p>
+        </ion-row>
 
-</ion-content>
+        <!--
+        <ion-row *ngFor="let a of [1,1,1,1,1,1,1,1,1,1]">
+          <ion-col>
+            info here
+          </ion-col>
+        </ion-row>
+        -->
+      </ion-grid>
+    </section>
+  </ion-content>

@@ -13,6 +13,7 @@ export class ReservationModel {
     time: any; //timeline text
     messagesCnt: number = 0;
     dispOrder: number;
+    displayYn: boolean = false; //회의실 예약목록에서 날짜 출력 여부 저장.
 
     constructor(){
     }
@@ -106,5 +107,12 @@ export class ReservationModel {
     }
     public getDispOrder(): number {
       return this.dispOrder;
+    }
+
+    public isDisplay(): boolean {
+      return this.displayYn;
+    }
+    public setDisplay(displayYn) {
+      this.displayYn = displayYn;
     }
 }

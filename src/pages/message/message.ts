@@ -151,11 +151,14 @@ export class MessagePage {
             const result = firebase.database().ref("messages/"+msg.key).remove();
 
             confirm.dismiss().then(() => {
-              this.navCtrl.pop().then(() => {
-                console.log("message page close");
-                // 다시 메세지 목록 호출
-                this.navCtrl.push("MessagePage", {"reservation": this.reservation} );
-              });
+              let index = this.messages.indexOf(msg);
+              this.messages.splice(index,1);
+
+              // this.navCtrl.pop().then(() => {
+              //   console.log("message page close");
+              //   // 다시 메세지 목록 호출
+              //   this.navCtrl.push("MessagePage", {"reservation": this.reservation} );
+              // });
             });
             return false;
           }
