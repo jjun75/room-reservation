@@ -40,9 +40,9 @@ export class LoginPage {
         console.log("login user >>>>" + result.user.email);
         this.user.id = result.user.uid;
         this.user.email = result.user.email;
-        this.user = this.loginUserInfo(result.user.uid);
+        let user = this.loginUserInfo(result.user.uid);
         this.storage.clear().then(()=> {
-          this.storage.set("user", this.user);
+          this.storage.set("username", user.getName());
         });
       } else {
         console.log("result false");
@@ -61,10 +61,10 @@ export class LoginPage {
   loginUserInfo(id: any): User {
     console.log('login id:'+ id);
     var user = new User();
-    const userRef = firebase.database().ref('/users/' + id + '/');
+    const userRef = firebase.database().ref('/users/' + id);
     userRef.once('value', (items: any) => {
       if(items){
-        console.log(items);
+        console.log("login user name : "+items.val().name);
         this.user.setName(items.val().name);
         this.user.setEmpNo(items.val().empNo);
       }

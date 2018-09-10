@@ -47,10 +47,15 @@ export class MyApp {
     firebase.initializeApp(environmet.firebaseConfig);
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
+        this.user = new User();
+        this.user.setId(user.uid);
+        this.user.setEmail(user.email);
+        // storage 에서 값 가져와 사용하기 안됨..좀더 분석후 적용
+        // storage.get("username").then((data)=>{
+        //   this.user.setName(data);
+        //   console.log("storage user info : " + data);
+        // });
         this.rootPage = "HomePage"; //page 객체를 사용시 Lazy Loading 이 안됨.
-        storage.get("user").then((data)=>{
-          this.user = data;
-        });
       } else {
         this.rootPage = "WelcomePage";
       }
@@ -75,7 +80,11 @@ export class MyApp {
     this.activePage.next(page);
   }
 
-
+  myProfile(){
+    let page = { title: 'ProfilePage', component: 'ProfilePage', active: true, icon: 'profile'};
+    this.nav.setRoot(page.component);
+    this.splashScreen.hide();
+  }
 
 
   checkActive(page) {

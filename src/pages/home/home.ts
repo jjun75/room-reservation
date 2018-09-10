@@ -4,6 +4,7 @@ import { IonicPage, NavController, App } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
 import { ReservationModel } from '../../model/reservation.model';
+import { User } from '../../model/user';
 
 @IonicPage()
 @Component({
@@ -11,7 +12,7 @@ import { ReservationModel } from '../../model/reservation.model';
   templateUrl: 'home.html'
 })
 export class HomePage {
-
+  
   public estateProperty = {
     name: '회의실 예약 시스템',
     image: 'assets/imgs/background/background-6.jpg',

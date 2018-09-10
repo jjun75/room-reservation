@@ -3,10 +3,14 @@
     <ion-content>
       <div class="menu-header">
         <!--material-design-background-->
-        <img class="user-avatar round" [src]="chosenPicture || placeholder" onerror="this.src='assets/imgs/avatar/girl-avatar.png'"
+        <img class="user-avatar round" [src]="chosenPicture || placeholder" onerror="this.src='assets/imgs/avatar/girl-avatar.png'" (click)="myProfile();"
         />
-        <p class="name">{{user.name}}</p>
-        <p class="e-mail">{{user.email}}</p>
+        <p class="name" *ngIf="user">{{user.name}}</p>
+        <p class="e-mail" *ngIf="user">{{user.email}}
+        <button ion-button clear (click)="myProfile();">
+        <ion-icon name="open" item-left></ion-icon>
+        </button>
+        </p>
       </div>
       <ion-list no-lines>
         <button menuClose="left" ion-item detail-none *ngFor="let p of pages" (click)="openPage(p)">
