@@ -40,6 +40,7 @@ export class LoginPage {
         console.log("login user >>>>" + result.user.email);
         this.user.id = result.user.uid;
         this.user.email = result.user.email;
+        this.user = this.loginUserInfo(result.user.uid);
         this.storage.clear().then(()=> {
           this.storage.set("user", this.user);
         });
@@ -64,25 +65,12 @@ export class LoginPage {
     userRef.once('value', (items: any) => {
       if(items){
         console.log(items);
+        this.user.setName(items.val().name);
+        this.user.setEmpNo(items.val().empNo);
       }
     });
     return user;
   }
-
-  // login() {
-  //   this.loader.show();
-  //   firebase.auth().signInWithEmailAndPassword(this.account.email, this.account.password)
-  //     .then((result) => {
-  //       console.log(result);
-  //     }).catch((error) => {
-  //       let alert = this.alertCtrl.create({
-  //         title : "Login Error",
-  //         message: error.message
-  //       });
-  //       alert.present();
-  //     });
-  //   this.loader.hide();
-  // }
 
   signup() {
     this.navCtrl.push(SignupPage);

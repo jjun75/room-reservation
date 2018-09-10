@@ -7,6 +7,7 @@ import { Subject } from 'rxjs/Subject';
 import * as environmet from '../environments/environments'
 import * as firebase from 'firebase';
 import { AuthProvider } from '../providers/auth/auth.provider';
+import { User } from '../model/user';
 
 @Component({
   templateUrl: 'app.html'
@@ -17,7 +18,7 @@ export class MyApp {
   activePage: any = new Subject();
   placeholder = 'assets/imgs/avatar/girl-avatar.png';
   chosenPicture: any;
-
+  user: User;
   pages: Array<{ title: string, component: any, active: boolean, icon: string }>;
 
   constructor(
@@ -31,7 +32,7 @@ export class MyApp {
 
     this.pages = [
       { title: 'Home', component: 'HomePage', active: true, icon: 'home'},
-      { title: 'ConferenceRoom', component: 'ConferencePage', active: false, icon: 'calendar'},
+      { title: 'Reservation', component: 'ConferencePage', active: false, icon: 'calendar'},
       { title: 'Settings', component: 'Settings', active: false, icon: 'settings'},
 
     ];
@@ -47,6 +48,9 @@ export class MyApp {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.rootPage = "HomePage"; //page 객체를 사용시 Lazy Loading 이 안됨.
+        storage.get("user").then((data)=>{
+          this.user = data;
+        });
       } else {
         this.rootPage = "WelcomePage";
       }

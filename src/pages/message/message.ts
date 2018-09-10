@@ -149,6 +149,10 @@ export class MessagePage {
           handler: data => {
             console.log('Agree clicked : '+ msg.key);
             const result = firebase.database().ref("messages/"+msg.key).remove();
+            const messagesCntRef = firebase.database().ref("reservation/"+this.reservation.rid+"/messagesCnt");
+            messagesCntRef.transaction((data) => {
+              return data-1;
+            });
 
             confirm.dismiss().then(() => {
               let index = this.messages.indexOf(msg);
