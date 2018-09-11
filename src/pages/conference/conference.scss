@@ -1,4 +1,28 @@
 page-conference {
+  $black-overlay: rgba(0, 0, 0, 0.3);
+  $text-color: #666;
+  $banner-text-color: white;
+  $content-color: whitesmoke;
+  $detail-background: rgba(236, 236, 236, 0.8);
+  .home-image {
+    background-size: cover;
+    height: 50vh;
+    position: relative;
+  }
+  .home-banner {
+    color: $banner-text-color;
+    background: $black-overlay;
+    height: 10vh;
+    width: 100vw;
+    position: absolute;
+    bottom: -1px;
+
+    .home-title {
+      display: block;
+      font-size: 3rem;
+    }
+
+  }
   ion-card {
     position: relative;
     width: 100%;

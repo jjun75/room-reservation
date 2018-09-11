@@ -7,7 +7,7 @@
         />
         <p class="name" *ngIf="user">{{user.name}}</p>
         <p class="e-mail" *ngIf="user">{{user.email}}
-        <button ion-button clear (click)="myProfile();">
+        <button menuClose="left" ion-button clear (click)="myProfile();">
         <ion-icon name="open" item-left></ion-icon>
         </button>
         </p>

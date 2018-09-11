@@ -22,6 +22,10 @@ export class ConferencePage {
   public reservList: any;
   public selectedMenu: any;
   public selectedId: string;
+  public pageProperty = {
+    name: "회의실 예약 목록",
+    image: "assets/imgs/background/background-3.jpg"
+  };
 
   constructor(
         private modalCtrl: ModalController,

@@ -3,7 +3,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>회의실예약목록</ion-title>
+    <ion-title>RESERVATION</ion-title>
     <ion-buttons end>
       <button ion-button icon-ony (click)='roomReserve();'>
         <ion-icon name='create'></ion-icon>
@@ -11,32 +11,13 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
-<!--
-<ion-content padding>
-<timeline endIcon="pulse">
-    <timeline-item *ngFor="let item of reservList">
-      <timeline-time [time]="item.time"></timeline-time>
-      <ion-icon [name]="item.icon"></ion-icon>
-      <ion-card>
-        <ion-card-header>
-          {{item.conferenceTitle}}
-        </ion-card-header>
-        <ion-card-content>
-          {{item.conferenceContents}}
-        </ion-card-content>
-        <ion-row>
-            <ion-col>
-              <button ion-button color="primary" clear small float-right (click)="viewMessages(item)">
-              {{item.messagesCnt}} Comments
-            </button>
-            </ion-col>
-          </ion-row>
-      </ion-card>
-    </timeline-item>
-  </timeline>
-</ion-content>
--->
+
 <ion-content class="list-avatar-page">
+  <section class="home-image" [ngStyle]="{ 'background-image': 'url(' + pageProperty.image + ')'}">
+    <section class="home-banner" padding>
+      <span class="home-title">회의실 예약 목록</span>
+    </section>
+  </section>
   <ion-list>
     <div *ngFor="let item of reservList">
       <ion-list-header *ngIf="item.isDisplay()">{{item.conferenceDate}}</ion-list-header>
