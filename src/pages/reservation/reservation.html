@@ -26,31 +26,46 @@
       </ion-select>
     </ion-item>
     <ion-item>
-      <ion-label stacked>예약일</ion-label>
+      <ion-label>예약일</ion-label>
       <ion-datetime displayFormat="YYYY-MM-DD" min="2018" max="2020" [(ngModel)]="res.conferenceDate" doneText="확인" cancelText="취소"></ion-datetime>
     </ion-item>
     <ion-item>
-      <ion-label stacked>시작시간</ion-label>
+      <ion-label>시작시간</ion-label>
       <ion-datetime displayFormat="HH:mm" [(ngModel)]="res.startTime" doneText="확인" cancelText="취소"></ion-datetime>
     </ion-item>
     <ion-item>
-      <ion-label stacked>종료시간</ion-label>
+      <ion-label>종료시간</ion-label>
       <ion-datetime displayFormat="HH:mm" [(ngModel)]="res.endTime" doneText="확인" cancelText="취소"></ion-datetime>
     </ion-item>
     <ion-item>
-      <ion-label stacked>회의명</ion-label>
+      <ion-label floating>회의명</ion-label>
       <ion-input type="text" [(ngModel)]="res.conferenceTitle"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label stacked>회의주제</ion-label>
-      <ion-textarea type="text" [(ngModel)]="res.conferenceContents"></ion-textarea>
+      <ion-label floating>회의주제</ion-label>
+      <ion-textarea type="text" [(ngModel)]="res.conferenceContents" rows="3"></ion-textarea>
     </ion-item>
     <ion-item>
-        <ion-label>참석자</ion-label>
-        <ion-select [(ngModel)]="attendant" multiple="true" [selectOptions]="selectOptions" okText="완료" cancelText="취소">
-          <ion-option *ngFor="let user of members" [value]="user">{{user.name}}</ion-option>
-        </ion-select>
+      <ion-label>참석자</ion-label>
+      <ion-select [(ngModel)]="attendant" multiple="true" [selectOptions]="selectOptions" okText="완료" cancelText="취소">
+        <ion-option *ngFor="let user of members" [value]="user">{{user.name}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <div showWhen="android">
+      <ion-item>
+        <ion-label>메일발송</ion-label>
+        <ion-toggle [(ngModel)]="sendMail"></ion-toggle>
       </ion-item>
+    </div>
+    <div showWhen="core">
+      <ion-item>
+        <ion-label>메일발송</ion-label>
+        <ion-toggle [(ngModel)]="sendMail" disabled="true"></ion-toggle>
+      </ion-item>
+      <ion-item>
+        웹브라우저에서는 메일발송을 지원하지 않습니다.
+      </ion-item>
+    </div>
   </ion-list>
 
   <div class='divider' style="width:100%;height:30px"></div>

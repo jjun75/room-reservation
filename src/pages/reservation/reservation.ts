@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, Platform } from 'ionic-angular';
 import { ReservationModel } from '../../model/reservation.model';
 import { LoaderProvider } from '../../providers/loader/loader';
 import * as firebase from 'firebase';
@@ -22,9 +22,11 @@ export class ReservationPage {
   selectOptions: any;
   members: any;
   attendant: any;
+  sendMail: any;
 
   constructor(
     private loader: LoaderProvider,
+    public platform: Platform,
     public viewCtrl: ViewController,
     public navCtrl: NavController,
     public navParams: NavParams) {
@@ -37,6 +39,13 @@ export class ReservationPage {
         {roomId: "02", roomName: "소회의실"}
       ];
       this.res = new ReservationModel();
+      this.reservationList();
+      this.attendant = "";
+      if(this.platform.is('android')){
+        this.sendMail = true;
+      }else{
+        this.sendMail = false;
+      }
   }
 
   ionViewDidLoad() {
