@@ -14,6 +14,7 @@ export class ReservationModel {
     messagesCnt: number = 0;
     dispOrder: number;
     displayYn: boolean = false; //회의실 예약목록에서 날짜 출력 여부 저장.
+    attendant: any;
 
     constructor(){
     }
@@ -114,5 +115,12 @@ export class ReservationModel {
     }
     public setDisplay(displayYn) {
       this.displayYn = displayYn;
+    }
+
+    public setAttendant(attendant: any) {
+        this.attendant = attendant;
+    }
+    public getAttendant(){
+        return this.attendant;
     }
 }

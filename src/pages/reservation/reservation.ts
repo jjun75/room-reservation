@@ -77,6 +77,7 @@ export class ReservationPage {
         this.members = [];
         items.forEach(element => {
           var user = new User();
+          user.setId(element.val().id);
           user.setEmail(element.val().email);
           user.setName(element.val().name);
           this.members.push(user);

@@ -108,7 +108,8 @@ export class ConferencePage {
         data.setRid(key);
         let dispOrder = Number(data.conferenceDate.replace(/-/gi, "")+data.startTime.replace(/:/gi,""));
         data.setDispOrder(999999999999-dispOrder);
-        this.writeReservationData(key, data);
+        this.writeReservation(key, data);
+        this.writeAttendant(key, data.attendant);
       }
     });
 
@@ -116,14 +117,21 @@ export class ConferencePage {
 
   }
 
-  writeReservationData(key: string, data: any) {
+  writeReservation(key: string, data: any) {
     console.log('writeReservationData:' + key);
     firebase.database().ref('/reservation/' + key ).update(data, error => {
       if (error) {
         console.log('database insert error : ' + error.message);
-      } else {
-        console.log('database insert success');
       }
+    });
+  }
+
+  writeAttendant(key: string, data:any){
+    console.log('writeAttendant:' + key);
+    firebase.database().ref('/attendant/'+ key).set(data, error => {
+      if (error) {
+        console.log('database insert error : ' + error.message);
+      } 
     });
   }
 

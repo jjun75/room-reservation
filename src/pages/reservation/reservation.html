@@ -47,7 +47,7 @@
     </ion-item>
     <ion-item>
       <ion-label>참석자</ion-label>
-      <ion-select [(ngModel)]="attendant" multiple="true" [selectOptions]="selectOptions" okText="완료" cancelText="취소">
+      <ion-select [(ngModel)]="res.attendant" multiple="true" [selectOptions]="selectOptions" okText="완료" cancelText="취소">
         <ion-option *ngFor="let user of members" [value]="user">{{user.name}}</ion-option>
       </ion-select>
     </ion-item>
