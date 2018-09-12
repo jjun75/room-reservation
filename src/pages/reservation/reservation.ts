@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { ReservationModel } from '../../model/reservation.model';
-
+import { LoaderProvider } from '../../providers/loader/loader';
+import * as firebase from 'firebase';
+import { User } from '../../model/user';
 /**
  * Generated class for the ReservationPage page.
  *
@@ -15,16 +17,26 @@ import { ReservationModel } from '../../model/reservation.model';
   templateUrl: 'reservation.html',
 })
 export class ReservationPage {
-  public res: ReservationModel = new ReservationModel();
-  public conferenceRooms = [
-    {roomId: "01", roomName: "대회의실"},
-    {roomId: "02", roomName: "소회의실"}
-  ]
+  res: ReservationModel;
+  conferenceRooms: any;
+  selectOptions: any;
+  members: any;
+  attendant: any;
 
   constructor(
+    private loader: LoaderProvider,
     public viewCtrl: ViewController,
     public navCtrl: NavController,
     public navParams: NavParams) {
+      this.selectOptions = {
+        title: "참석자를 선택해주세요",
+        subTitle: "참석자에게 메일을 발송할 수 있습니다."
+      };
+      this.conferenceRooms = [
+        {roomId: "01", roomName: "대회의실"},
+        {roomId: "02", roomName: "소회의실"}
+      ];
+      this.res = new ReservationModel();
   }
 
   ionViewDidLoad() {
@@ -46,5 +58,25 @@ export class ReservationPage {
 
   yearChange(val: any) {
     console.log('Year Change:', val);
+  }
+
+  reservationList(){
+    this.loader.show();
+    const reservationRef = firebase.database().ref("users/").orderByChild('name');
+    reservationRef.on('value',(items: any) => {
+      if(items) {
+        this.members = [];
+        items.forEach(element => {
+          var user = new User();
+          user.setEmail(element.val().email);
+          user.setName(element.val().name);
+          this.members.push(user);
+        });
+      }else{
+        console.log("no Result");
+      }
+    });
+
+    this.loader.hide();
   }
 }
