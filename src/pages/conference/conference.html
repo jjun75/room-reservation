@@ -18,23 +18,34 @@
       <span class="home-title">회의실 예약 목록</span>
     </section>
   </section>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-dropdown"
+      refreshingSpinner="circles">
+    </ion-refresher-content>
+  </ion-refresher>
+
   <ion-list>
     <div *ngFor="let item of reservList">
       <ion-list-header *ngIf="item.isDisplay()">{{item.conferenceDate}}</ion-list-header>
 
       <ion-item>
         <ion-avatar item-start>
-          <img src="assets/imgs/avatar/avatar-ts-woody.png">
+          <img src="assets/imgs/avatar/avatar-ts-{{item.icon}}.png">
         </ion-avatar>
         <h2>{{item.conferenceTitle}} / {{item.time}}</h2>
         <p>{{item.conferenceContents}}</p>
-        <ion-note item-end>
-          <button ion-button color="dark" clear small float-right (click)="viewMessages(item)">
-            <ion-icon name="chatbubbles"></ion-icon> {{item.messagesCnt}} Comments
-          </button>
-        </ion-note>
+        <button ion-button item-end clear icon-start (click)="viewMessages(item)">
+          <ion-icon name="chatbubbles"></ion-icon> {{item.messagesCnt}}
+        </button>
+        
       </ion-item>
 
     </div>
   </ion-list>
+
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
 </ion-content>

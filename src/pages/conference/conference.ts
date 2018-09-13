@@ -22,6 +22,7 @@ export class ConferencePage {
   public reservList: any;
   public selectedMenu: any;
   public selectedId: string;
+  private limit: any = 10;
 
   public pageProperty = {
     name: "회의실 예약 목록",
@@ -38,11 +39,34 @@ export class ConferencePage {
     this.reservationList();
 
   }
+  
+  doRefresh(refresher) {
+    console.log('Begin async operation', refresher);
+    this.limit = 10;
+    
+    this.reservationList();
+    setTimeout(() => {
+      console.log('Async operation has ended');
+      refresher.complete();
+    }, 2000);
+  }
 
-  reservationList(){
-    this.loader.show();
-    const reservationRef = firebase.database().ref("reservation/").orderByChild('dispOrder');
-    reservationRef.on('value',(items: any) => {
+  doInfinite(infiniteScroll) {
+    console.log('Begin async operation');
+    this.limit += 10;
+    try{
+      this.reservationList();
+    }catch(e){
+      console.log(e.message);
+    }
+    setTimeout(() => {
+       infiniteScroll.complete();
+    }, 500);
+  }
+
+  async reservationList(){
+    const reservationRef = firebase.database().ref("reservation/").orderByChild('dispOrder').limitToFirst(this.limit);
+    await reservationRef.once('value',(items: any) => {
       if(items) {
         this.reservList = [];
         let tmp = "";
@@ -63,9 +87,9 @@ export class ConferencePage {
           reservation.setStartTime(startTime);
           reservation.setEndTime(element.val().endTime);
           if(element.val().roomId === '01'){
-            reservation.setIcon('calendar');
+            reservation.setIcon('woody');
           }else{
-            reservation.setIcon('cafe');
+            reservation.setIcon('buzz');
           }
           reservation.setTime(startTime +" ~ "+element.val().endTime);
           reservation.setMessagesCnt(element.val().messagesCnt);
@@ -77,8 +101,6 @@ export class ConferencePage {
         console.log("no Result");
       }
     });
-
-    this.loader.hide();
   }
 
   getMessages(rid: string): string {
