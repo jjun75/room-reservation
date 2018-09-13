@@ -1,3 +1,4 @@
+import { AuthProvider } from './../../providers/auth/auth.provider';
 import { SharedModule } from './../../app/shared.module';
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
@@ -14,6 +15,9 @@ import { ConferencePage } from './conference';
   ],
   exports: [
     ConferencePage,
+  ],
+  providers: [
+    AuthProvider
   ]
 })
 export class ConferencePageModule {}

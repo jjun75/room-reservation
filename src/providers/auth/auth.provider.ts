@@ -3,14 +3,18 @@ import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
 
 import * as firebase from 'firebase';
+import { User } from '../../model/user';
 
 
 @Injectable()
 export class AuthProvider {
 
-   public user: Observable<any>;
-
    constructor() {
+   }
+
+
+   userInfo(): any {
+     return firebase.auth().currentUser;
    }
 
    /**

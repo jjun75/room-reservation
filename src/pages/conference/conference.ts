@@ -1,3 +1,4 @@
+import { AuthProvider } from './../../providers/auth/auth.provider';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
@@ -5,6 +6,7 @@ import * as firebase from 'firebase';
 import { ReservationModel } from '../../model/reservation.model';
 import { LoaderProvider } from '../../providers/loader/loader';
 import  * as environments from '../../environments/environments';
+import { User } from 'firebase';
 
 
 /**
@@ -22,6 +24,7 @@ export class ConferencePage {
   public reservList: any;
   public selectedMenu: any;
   public selectedId: string;
+  public user: User;
   private limit: any = 10;
 
   public pageProperty = {
@@ -33,17 +36,19 @@ export class ConferencePage {
         private modalCtrl: ModalController,
         private storage: Storage,
         private loader: LoaderProvider,
+        private auth: AuthProvider,
         public navCtrl: NavController,
         public navParams: NavParams) {
 
     this.reservationList();
+    this.user = auth.userInfo();
 
   }
-  
+
   doRefresh(refresher) {
     console.log('Begin async operation', refresher);
     this.limit = 10;
-    
+
     this.reservationList();
     setTimeout(() => {
       console.log('Async operation has ended');
@@ -73,6 +78,7 @@ export class ConferencePage {
         items.forEach(element => {
           var reservation = new ReservationModel();
           reservation.setRid(element.val().rid);
+          reservation.setUid(element.val().uid);
           reservation.setRoomId(element.val().roomId);
           reservation.setRoomName(element.val().roomName);
           reservation.setConferenceTitle(element.val().conferenceTitle);
@@ -126,6 +132,7 @@ export class ConferencePage {
     modal.onDidDismiss(data => {
       if(data){
         console.log(data);
+        data.setUid(this.user.uid);
         const key = firebase.database().ref("reservation/").push().key;
         data.setRid(key);
         let dispOrder = Number(data.conferenceDate.replace(/-/gi, "")+data.startTime.replace(/:/gi,""));
@@ -148,12 +155,17 @@ export class ConferencePage {
     });
   }
 
+  deleteReservation(item: any){
+    console.log("delete reservation >> " + item.conferenceTitle);
+
+  }
+
   writeAttendant(key: string, data:any){
     console.log('writeAttendant:' + key);
     firebase.database().ref('/attendant/'+ key).set(data, error => {
       if (error) {
         console.log('database insert error : ' + error.message);
-      } 
+      }
     });
   }
 

@@ -1,5 +1,6 @@
 export class ReservationModel {
     rid; //예약번호
+    uid; //예약자 ID
     roomId: String; //회의실 ID
     roomName: String; //회의실명
     conferenceTitle: String; //회의제목
@@ -24,7 +25,12 @@ export class ReservationModel {
     public setRid(rid: String) {
         this.rid = rid;
     }
-
+    public getUid(): String {
+        return this.uid;
+    }
+    public setUid(uid: String) {
+        this.uid = uid;
+    }
     public getRoomId(): String {
         return this.roomId;
     }
