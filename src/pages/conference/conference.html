@@ -28,7 +28,7 @@
   <ion-list>
     <div *ngFor="let item of reservList">
       <ion-list-header *ngIf="item.isDisplay()">{{item.conferenceDate}}</ion-list-header>
-      <ion-item-sliding (ionSwipe)="deleteReservation(item)">
+      <ion-item-sliding #slidingItem (ionSwipe)="deleteReservation(item)">
         <ion-item>
           <ion-avatar item-start>
             <img src="assets/imgs/avatar/avatar-ts-{{item.icon}}.png">
@@ -40,8 +40,20 @@
           </button>
 
         </ion-item>
+        
         <ion-item-options *ngIf="item.uid == user.uid" side="right">
-          <button ion-button color="danger" (click)="deleteReservation(item)">
+
+          <div showWhen="android">
+            <button ion-button color="primary" (click)="deleteReservation(item, slidingItem)">
+              <ion-icon name="send"></ion-icon>
+            </button>
+          </div>
+          <div showWhen="core">
+            <button ion-button color="primary" (click)="deleteReservation(item, slidingItem)">
+              <ion-icon name="send"></ion-icon>
+            </button>
+          </div>
+          <button ion-button color="danger" (click)="deleteReservation(item, slidingItem)">
             <ion-icon name="trash"></ion-icon>
           </button>
         </ion-item-options>

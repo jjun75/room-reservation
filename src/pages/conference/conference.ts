@@ -1,11 +1,11 @@
 import { AuthProvider } from './../../providers/auth/auth.provider';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, AlertController, ItemSliding } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import * as firebase from 'firebase';
 import { ReservationModel } from '../../model/reservation.model';
 import { LoaderProvider } from '../../providers/loader/loader';
-import  * as environments from '../../environments/environments';
+import * as environments from '../../environments/environments';
 import { User } from 'firebase';
 
 
@@ -33,12 +33,13 @@ export class ConferencePage {
   };
 
   constructor(
-        private modalCtrl: ModalController,
-        private storage: Storage,
-        private loader: LoaderProvider,
-        private auth: AuthProvider,
-        public navCtrl: NavController,
-        public navParams: NavParams) {
+    private modalCtrl: ModalController,
+    private storage: Storage,
+    private loader: LoaderProvider,
+    private auth: AuthProvider,
+    private alertCtrl: AlertController,
+    public navCtrl: NavController,
+    public navParams: NavParams) {
 
     this.reservationList();
     this.user = auth.userInfo();
@@ -59,20 +60,20 @@ export class ConferencePage {
   doInfinite(infiniteScroll) {
     console.log('Begin async operation');
     this.limit += 10;
-    try{
+    try {
       this.reservationList();
-    }catch(e){
+    } catch (e) {
       console.log(e.message);
     }
     setTimeout(() => {
-       infiniteScroll.complete();
+      infiniteScroll.complete();
     }, 500);
   }
 
-  async reservationList(){
+  async reservationList() {
     const reservationRef = firebase.database().ref("reservation/").orderByChild('dispOrder').limitToFirst(this.limit);
-    await reservationRef.once('value',(items: any) => {
-      if(items) {
+    await reservationRef.once('value', (items: any) => {
+      if (items) {
         this.reservList = [];
         let tmp = "";
         items.forEach(element => {
@@ -84,7 +85,7 @@ export class ConferencePage {
           reservation.setConferenceTitle(element.val().conferenceTitle);
           reservation.setConferenceContents(element.val().conferenceContents);
           let conferenceDate = element.val().conferenceDate;
-          if(tmp !== conferenceDate){
+          if (tmp !== conferenceDate) {
             tmp = conferenceDate;
             reservation.setDisplay(true);
           }
@@ -92,31 +93,31 @@ export class ConferencePage {
           let startTime = element.val().startTime;
           reservation.setStartTime(startTime);
           reservation.setEndTime(element.val().endTime);
-          if(element.val().roomId === '01'){
+          if (element.val().roomId === '01') {
             reservation.setIcon('woody');
-          }else{
+          } else {
             reservation.setIcon('buzz');
           }
-          reservation.setTime(startTime +" ~ "+element.val().endTime);
+          reservation.setTime(startTime + " ~ " + element.val().endTime);
           reservation.setMessagesCnt(element.val().messagesCnt);
 
 
           this.reservList.push(reservation);
         });
-      }else{
+      } else {
         console.log("no Result");
       }
     });
   }
 
   getMessages(rid: string): string {
-      const messagesRef = firebase.database().ref("messages/");
-      messagesRef.once('value',(items: any) => {
+    const messagesRef = firebase.database().ref("messages/");
+    messagesRef.once('value', (items: any) => {
 
-      });
-      return "";
+    });
+    return "";
 
-    }
+  }
 
 
   ionViewDidLoad() {
@@ -130,13 +131,13 @@ export class ConferencePage {
     let modal = this.modalCtrl.create("ReservationPage");
     //modal 창이 닫히면서 데이터 전송되면 데이터를 DB에 저장 처리
     modal.onDidDismiss(data => {
-      if(data){
+      if (data) {
         console.log(data);
         data.setUid(this.user.uid);
         const key = firebase.database().ref("reservation/").push().key;
         data.setRid(key);
-        let dispOrder = Number(data.conferenceDate.replace(/-/gi, "")+data.startTime.replace(/:/gi,""));
-        data.setDispOrder(999999999999-dispOrder);
+        let dispOrder = Number(data.conferenceDate.replace(/-/gi, "") + data.startTime.replace(/:/gi, ""));
+        data.setDispOrder(999999999999 - dispOrder);
         this.writeReservation(key, data);
         this.writeAttendant(key, data.attendant);
       }
@@ -148,21 +149,41 @@ export class ConferencePage {
 
   writeReservation(key: string, data: any) {
     console.log('writeReservationData:' + key);
-    firebase.database().ref('/reservation/' + key ).update(data, error => {
+    firebase.database().ref('/reservation/' + key).update(data, error => {
       if (error) {
         console.log('database insert error : ' + error.message);
       }
     });
   }
 
-  deleteReservation(item: any){
-    console.log("delete reservation >> " + item.conferenceTitle);
-
+  deleteReservation(item: any, slidingItem: ItemSliding) {
+    slidingItem.close();
+    let alert = this.alertCtrl.create({
+      title: '예약 취소',
+      message: '회의실 예약을 취소하시겠습니까?',
+      buttons: [
+        {
+          text: '아니오',
+          role: 'cancel',
+          handler: () => { }
+        },
+        {
+          text: '네',
+          handler: () => {
+            console.log("delete reservation >> " + item.conferenceTitle);
+            firebase.database().ref('/reservation/' + item.rid).remove();
+            let index = this.reservList.indexOf(item);
+            this.reservList.splice(index,1);
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
-  writeAttendant(key: string, data:any){
+  writeAttendant(key: string, data: any) {
     console.log('writeAttendant:' + key);
-    firebase.database().ref('/attendant/'+ key).set(data, error => {
+    firebase.database().ref('/attendant/' + key).set(data, error => {
       if (error) {
         console.log('database insert error : ' + error.message);
       }
@@ -175,7 +196,7 @@ export class ConferencePage {
   }
 
   viewMessages(reservation: ReservationModel) {
-    this.navCtrl.push("MessagePage", {"reservation": reservation} );
+    this.navCtrl.push("MessagePage", { "reservation": reservation });
   }
 
 }

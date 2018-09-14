@@ -1,10 +1,10 @@
 export const firebaseConfig = {
-    apiKey: "AIzaSyBZ3P9Oa_oonar_Cgti4L2_uOenFEAtJ5s",
-    authDomain: "newson-5c00c.firebaseapp.com",
-    databaseURL: "https://newson-5c00c.firebaseio.com",
-    projectId: "newson-5c00c",
-    storageBucket: "",
-    messagingSenderId: "783096301455"
+    apiKey: "AIzaSyAG_4KvXChFX-Q_9y2FUQDbqAjVuKue4XQ",
+    authDomain: "p2018-ionic.firebaseapp.com",
+    databaseURL: "https://p2018-ionic.firebaseio.com",
+    projectId: "p2018-ionic",
+    storageBucket: "p2018-ionic.appspot.com",
+    messagingSenderId: "775784222775"
   };
 
 export const conferenceRoomCode = [
