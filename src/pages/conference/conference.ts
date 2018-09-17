@@ -1,12 +1,14 @@
 import { AuthProvider } from './../../providers/auth/auth.provider';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, AlertController, ItemSliding } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, AlertController, ItemSliding, Platform } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import * as firebase from 'firebase';
 import { ReservationModel } from '../../model/reservation.model';
 import { LoaderProvider } from '../../providers/loader/loader';
 import * as environments from '../../environments/environments';
 import { User } from 'firebase';
+import { EmailComposer } from '@ionic-native/email-composer';
+
 
 
 /**
@@ -37,7 +39,9 @@ export class ConferencePage {
     private storage: Storage,
     private loader: LoaderProvider,
     private auth: AuthProvider,
+    private emailComp: EmailComposer,
     private alertCtrl: AlertController,
+    private platform: Platform,
     public navCtrl: NavController,
     public navParams: NavParams) {
 
@@ -72,7 +76,7 @@ export class ConferencePage {
 
   async reservationList() {
     const reservationRef = firebase.database().ref("reservation/").orderByChild('dispOrder').limitToFirst(this.limit);
-    await reservationRef.once('value', (items: any) => {
+    await reservationRef.on('value', (items: any) => {
       if (items) {
         this.reservList = [];
         let tmp = "";
@@ -147,6 +151,7 @@ export class ConferencePage {
 
   }
 
+
   writeReservation(key: string, data: any) {
     console.log('writeReservationData:' + key);
     firebase.database().ref('/reservation/' + key).update(data, error => {
@@ -154,6 +159,32 @@ export class ConferencePage {
         console.log('database insert error : ' + error.message);
       }
     });
+  }
+
+  sendMail(item: any, slidingItem: ItemSliding){
+    slidingItem.close();
+    if (this.platform.is('cordova')) {
+      this.emailComp.isAvailable().then((available: boolean) => {
+        if(available){
+          let attendant = [];
+          let to = [];
+          attendant.push(item.attendant);
+          attendant.forEach(element => {
+            to.push(element.val().email);
+          });
+          console.log("cc >>> "+to);
+          let email = {
+            to: to,
+            subject: item.conferenceTitle,
+            body: 'How are you? Nice greetings from Leipzig',
+            isHtml: true
+          };
+
+          // Send a text message using default options
+          this.emailComp.open(email);
+        }
+      });
+    }
   }
 
   deleteReservation(item: any, slidingItem: ItemSliding) {

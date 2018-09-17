@@ -1,3 +1,4 @@
+import { EmailComposer } from '@ionic-native/email-composer';
 import { AuthProvider } from './../../providers/auth/auth.provider';
 import { SharedModule } from './../../app/shared.module';
 import { NgModule } from '@angular/core';
@@ -17,7 +18,8 @@ import { ConferencePage } from './conference';
     ConferencePage,
   ],
   providers: [
-    AuthProvider
+    AuthProvider,
+    EmailComposer
   ]
 })
 export class ConferencePageModule {}

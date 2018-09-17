@@ -40,18 +40,20 @@
           </button>
 
         </ion-item>
-        
+
         <ion-item-options *ngIf="item.uid == user.uid" side="right">
 
           <div showWhen="android">
-            <button ion-button color="primary" (click)="deleteReservation(item, slidingItem)">
+            <button ion-button color="primary" (click)="sendMail(item, slidingItem)">
               <ion-icon name="send"></ion-icon>
             </button>
           </div>
           <div showWhen="core">
-            <button ion-button color="primary" (click)="deleteReservation(item, slidingItem)">
+            <a href="mailto:sample@email.com">
+            <button ion-button color="primary">
               <ion-icon name="send"></ion-icon>
             </button>
+            </a>
           </div>
           <button ion-button color="danger" (click)="deleteReservation(item, slidingItem)">
             <ion-icon name="trash"></ion-icon>

@@ -12,6 +12,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { MyApp } from './app.component';
 import { LoaderProvider } from '../providers/loader/loader';
 import { SharedModule } from './shared.module';
+import { EmailComposer } from '@ionic-native/email-composer';
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -45,6 +46,7 @@ export function createTranslateLoader(http: HttpClient) {
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
+    EmailComposer,
     LoaderProvider
   ]
 })
