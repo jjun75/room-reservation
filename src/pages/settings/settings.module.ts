@@ -4,6 +4,8 @@ import { IonicPageModule } from 'ionic-angular';
 
 import { SettingsPage } from './settings';
 
+
+
 @NgModule({
   declarations: [
     SettingsPage,
@@ -14,6 +16,6 @@ import { SettingsPage } from './settings';
   ],
   exports: [
     SettingsPage
-  ]
+  ],
 })
 export class SettingsPageModule { }

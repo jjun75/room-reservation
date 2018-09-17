@@ -119,11 +119,11 @@ export class MessagePage {
             });
 
             confirm.dismiss().then(() => {
-              this.navCtrl.pop().then(() => {
-                console.log("message page close");
-                // 다시 메세지 목록 호출
-                //this.navCtrl.push("MessagePage", {"reservation": this.reservation} );
-              });
+              // this.navCtrl.pop().then(() => {
+              //   console.log("message page close");
+              //   // 다시 메세지 목록 호출
+              //   //this.navCtrl.push("MessagePage", {"reservation": this.reservation} );
+              // });
             });
             return false;
           }

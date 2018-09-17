@@ -161,9 +161,24 @@ export class ConferencePage {
     });
   }
 
+  mailTo(item:any, slidingItem: ItemSliding){
+    slidingItem.close();
+    let attendant = [];
+    let link = 'mailto:';
+    attendant.push(item.attendant);
+    let to = '';
+    if(attendant){
+      for(var i=0; i<attendant.length; i++){
+        if(attendant[i]){
+          to = to + attendant[i].email+';';
+        }
+      };
+      link+to+'?subject='+item.conferenceTitle+'&body='+item.conferenceContents;
+    }
+  }
   sendMail(item: any, slidingItem: ItemSliding){
     slidingItem.close();
-    if (this.platform.is('cordova')) {
+    if (this.platform.is('cordova') || this.platform.is('android') ) {
       this.emailComp.isAvailable().then((available: boolean) => {
         if(available){
           let attendant = [];
@@ -172,11 +187,10 @@ export class ConferencePage {
           attendant.forEach(element => {
             to.push(element.val().email);
           });
-          console.log("cc >>> "+to);
           let email = {
             to: to,
             subject: item.conferenceTitle,
-            body: 'How are you? Nice greetings from Leipzig',
+            body: item.conferenceContents,
             isHtml: true
           };
 
