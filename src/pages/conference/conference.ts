@@ -74,6 +74,10 @@ export class ConferencePage {
     }, 500);
   }
 
+  ionViewWillEnter(){
+    this.reservationList();
+  }
+
   async reservationList() {
     const reservationRef = firebase.database().ref("reservation/").orderByChild('dispOrder').limitToFirst(this.limit);
     await reservationRef.on('value', (items: any) => {
@@ -114,18 +118,14 @@ export class ConferencePage {
     });
   }
 
-  getMessages(rid: string): string {
-    const messagesRef = firebase.database().ref("messages/");
-    messagesRef.once('value', (items: any) => {
-
-    });
-    return "";
-
-  }
-
-
   ionViewDidLoad() {
     console.log('ionViewDidLoad ConferencePage');
+  }
+
+  ionViewDidLeave(){
+    console.log('ionViewDidLeave MessagePage');
+    const msgRef = firebase.database().ref("reservation/");
+    msgRef.off();
   }
 
   /**
@@ -143,7 +143,9 @@ export class ConferencePage {
         let dispOrder = Number(data.conferenceDate.replace(/-/gi, "") + data.startTime.replace(/:/gi, ""));
         data.setDispOrder(999999999999 - dispOrder);
         this.writeReservation(key, data);
-        this.writeAttendant(key, data.attendant);
+        if(data.attendant && data.attendant.length>0){
+          this.writeAttendant(key, data.attendant);
+        }
       }
     });
 
@@ -154,28 +156,36 @@ export class ConferencePage {
 
   writeReservation(key: string, data: any) {
     console.log('writeReservationData:' + key);
-    firebase.database().ref('/reservation/' + key).update(data, error => {
+    firebase.database().ref('/reservation/' + key).set(
+      {
+        rid: data.rid,
+        uid: data.uid,
+        roomId: data.roomId,
+        conferenceDate: data.conferenceDate,
+        startTime: data.startTime,
+        endTime: data.endTime,
+        conferenceTitle: data.conferenceTitle,
+        conferenceContents: data.conferenceContents,
+        displayYn: data.displayYn,
+        displayOrder: data.dispOrder,
+        messageCnt: 0
+      },
+      error => {
+        if (error) {
+          console.log('database insert error : ' + error.message);
+        }
+    });
+  }
+
+  writeAttendant(key: string, data: any) {
+    console.log('writeAttendant:' + key);
+    firebase.database().ref('/attendant/' + key).set(data, error => {
       if (error) {
         console.log('database insert error : ' + error.message);
       }
     });
   }
 
-  mailTo(item:any, slidingItem: ItemSliding){
-    slidingItem.close();
-    let attendant = [];
-    let link = 'mailto:';
-    attendant.push(item.attendant);
-    let to = '';
-    if(attendant){
-      for(var i=0; i<attendant.length; i++){
-        if(attendant[i]){
-          to = to + attendant[i].email+';';
-        }
-      };
-      link+to+'?subject='+item.conferenceTitle+'&body='+item.conferenceContents;
-    }
-  }
   sendMail(item: any, slidingItem: ItemSliding){
     slidingItem.close();
     if (this.platform.is('cordova') || this.platform.is('android') ) {
@@ -226,14 +236,7 @@ export class ConferencePage {
     alert.present();
   }
 
-  writeAttendant(key: string, data: any) {
-    console.log('writeAttendant:' + key);
-    firebase.database().ref('/attendant/' + key).set(data, error => {
-      if (error) {
-        console.log('database insert error : ' + error.message);
-      }
-    });
-  }
+
 
   getRoomName(roomId: string): string {
     let idx = Number.parseInt(roomId);

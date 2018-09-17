@@ -20,7 +20,7 @@ import * as moment from 'moment';
 })
 export class MessagePage {
   public reservation: ReservationModel;
-  public messages: any = [];
+  public messages: any;
 
   constructor(
     public navCtrl: NavController,
@@ -36,8 +36,9 @@ export class MessagePage {
     this.reservation = reservation;
     this.loader.show;
     const msgRef = firebase.database().ref("messages/").orderByChild('rid').equalTo(reservation.rid);
-    msgRef.once('value', (data: any) => {
+    msgRef.on('value', (data: any) => {
       if(data){
+        this.messages = [];
         data.forEach(element => {
           let message = {
             "key": element.key,
@@ -117,14 +118,14 @@ export class MessagePage {
             messagesCntRef.transaction((data) => {
               return data+1;
             });
-
-            confirm.dismiss().then(() => {
+            confirm.dismiss();
+            // confirm.dismiss().then(() => {
               // this.navCtrl.pop().then(() => {
               //   console.log("message page close");
               //   // 다시 메세지 목록 호출
               //   //this.navCtrl.push("MessagePage", {"reservation": this.reservation} );
               // });
-            });
+            // });
             return false;
           }
         }
@@ -153,17 +154,17 @@ export class MessagePage {
             messagesCntRef.transaction((data) => {
               return data-1;
             });
+            confirm.dismiss();
+            // confirm.dismiss().then(() => {
+            //   let index = this.messages.indexOf(msg);
+            //   this.messages.splice(index,1); //view 에서 삭제처리
 
-            confirm.dismiss().then(() => {
-              let index = this.messages.indexOf(msg);
-              this.messages.splice(index,1);
-
-              // this.navCtrl.pop().then(() => {
-              //   console.log("message page close");
-              //   // 다시 메세지 목록 호출
-              //   this.navCtrl.push("MessagePage", {"reservation": this.reservation} );
-              // });
-            });
+            //   // this.navCtrl.pop().then(() => {
+            //   //   console.log("message page close");
+            //   //   // 다시 메세지 목록 호출
+            //   //   this.navCtrl.push("MessagePage", {"reservation": this.reservation} );
+            //   // });
+            // }); // on 메소드로 변경.
             return false;
           }
         }
@@ -175,6 +176,15 @@ export class MessagePage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad MessagePage');
+  }
+
+  ionViewDidLeave(){
+    console.log('ionViewDidLeave MessagePage');
+    const msgRef = firebase.database().ref("messages/");
+    msgRef.off();
+  }
+  ionViewWillLeave(){
+    console.log('ionViewWillLeave MessagePage');
   }
 
 }
