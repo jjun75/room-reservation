@@ -1,6 +1,9 @@
+import { User } from "./user";
+
 export class ReservationModel {
     rid; //예약번호
     uid; //예약자 ID
+    userName: any;
     roomId: String; //회의실 ID
     roomName: String; //회의실명
     conferenceTitle: String; //회의제목
@@ -128,5 +131,12 @@ export class ReservationModel {
     }
     public getAttendant(){
         return this.attendant;
+    }
+
+    public setUserName(userName: String){
+      this.userName = userName;
+    }
+    public getUserName(){
+      return this.userName;
     }
 }

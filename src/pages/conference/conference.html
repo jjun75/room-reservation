@@ -35,6 +35,7 @@
           </ion-avatar>
           <h2>{{item.conferenceTitle}} / {{item.time}}</h2>
           <p>{{item.conferenceContents}}</p>
+          <p>{{item.userName}}</p>
           <button ion-button item-end clear icon-start (click)="viewMessages(item)">
             <ion-icon name="chatbubbles"></ion-icon> {{item.messagesCnt}}
           </button>

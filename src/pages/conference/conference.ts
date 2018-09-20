@@ -79,6 +79,7 @@ export class ConferencePage {
   }
 
   async reservationList() {
+    const userRef = firebase.database().ref('users');
     const reservationRef = firebase.database().ref("reservation/").orderByChild('dispOrder').limitToFirst(this.limit);
     await reservationRef.on('value', (items: any) => {
       if (items) {
@@ -108,7 +109,11 @@ export class ConferencePage {
           }
           reservation.setTime(startTime + " ~ " + element.val().endTime);
           reservation.setMessagesCnt(element.val().messagesCnt);
-
+          userRef.child(element.val().uid).once('value', (user:any) => {
+            if(user){
+              reservation.setUserName(user.val().name);
+            }
+          });
 
           this.reservList.push(reservation);
         });
@@ -191,11 +196,14 @@ export class ConferencePage {
     if (this.platform.is('cordova') || this.platform.is('android') ) {
       this.emailComp.isAvailable().then((available: boolean) => {
         if(available){
-          let attendant = [];
           let to = [];
-          attendant.push(item.attendant);
-          attendant.forEach(element => {
-            to.push(element.val().email);
+          let fbRef = firebase.database().ref('attendant');
+          fbRef.once('value', (items)=>{
+            if(items){
+              items.forEach(element => {
+                to.push(element.val().email);
+              });
+            }
           });
           let email = {
             to: to,
